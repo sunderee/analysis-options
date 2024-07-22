@@ -1,0 +1,10 @@
+# IDEs
+.idea
+.vscode
+
+# Dart related
+.dart_tool/
+**/*.lock
+
+# Compiled output
+analysis-options
