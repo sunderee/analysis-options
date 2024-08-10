@@ -20,7 +20,8 @@ final class RuleModel extends Equatable {
 
   factory RuleModel.fromJson(JsonObject json) => RuleModel(
         name: json['name'] as String,
-        description: json['description'] as String,
+        description:
+            (json['description'] as String).replaceAll(RegExp(r'\s\s+'), ' '),
         sets: (json['sets'] as List<dynamic>).cast<String>(),
         sinceDartSdk: json['sinceDartSdk'] as String,
         state: json['state'] as String,
