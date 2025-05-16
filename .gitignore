@@ -1,0 +1,8 @@
+# IDEs
+.idea
+.vscode
+.cursor
+
+# Dart/pub related
+.dart_tool/
+pubspec.lock
