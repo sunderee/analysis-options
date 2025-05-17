@@ -34,12 +34,15 @@ void main() {
       await writeAnalysisFile(tempFilePath, Style.core, rules);
 
       final content = await File(tempFilePath).readAsString();
-      expect(content, contains('include: package:lints/core.yaml'));
-      expect(content, contains('strict-casts: true'));
-      expect(content, contains('strict-inference: true'));
-      expect(content, contains('strict-raw-types: true'));
-      expect(content, contains('test_rule: error'));
-      expect(content, contains('- test_rule'));
+      final lines = content.split('\n');
+
+      expect(lines, contains('include: package:lints/core.yaml'));
+      expect(lines, contains('  enable-experiment: []'));
+      expect(lines, contains('    strict-casts: true'));
+      expect(lines, contains('    strict-inference: true'));
+      expect(lines, contains('    strict-raw-types: true'));
+      expect(lines, contains('    test_rule: error'));
+      expect(lines, contains('    - test_rule'));
     });
 
     test('should write recommended style configuration correctly', () async {
@@ -57,9 +60,11 @@ void main() {
       await writeAnalysisFile(tempFilePath, Style.recommended, rules);
 
       final content = await File(tempFilePath).readAsString();
-      expect(content, contains('include: package:lints/recommended.yaml'));
-      expect(content, contains('test_rule: error'));
-      expect(content, contains('- test_rule'));
+      final lines = content.split('\n');
+
+      expect(lines, contains('include: package:lints/recommended.yaml'));
+      expect(lines, contains('    test_rule: error'));
+      expect(lines, contains('    - test_rule'));
     });
 
     test('should write flutter style configuration correctly', () async {
@@ -77,9 +82,11 @@ void main() {
       await writeAnalysisFile(tempFilePath, Style.flutter, rules);
 
       final content = await File(tempFilePath).readAsString();
-      expect(content, contains('include: package:flutter_lints/flutter.yaml'));
-      expect(content, contains('test_rule: error'));
-      expect(content, contains('- test_rule'));
+      final lines = content.split('\n');
+
+      expect(lines, contains('include: package:flutter_lints/flutter.yaml'));
+      expect(lines, contains('    test_rule: error'));
+      expect(lines, contains('    - test_rule'));
     });
 
     test('should handle unstable rules correctly', () async {
@@ -97,9 +104,11 @@ void main() {
       await writeAnalysisFile(tempFilePath, Style.core, rules);
 
       final content = await File(tempFilePath).readAsString();
-      expect(content, contains('# test_rule: error'));
-      expect(content, contains('# - test_rule'));
-      expect(content, contains('# State: unstable'));
+      final lines = content.split('\n');
+
+      expect(lines, contains('    # test_rule: error'));
+      expect(lines, contains('    # - test_rule'));
+      expect(lines, contains('    # State: unstable'));
     });
 
     test('should handle incompatible rules correctly', () async {
@@ -117,7 +126,9 @@ void main() {
       await writeAnalysisFile(tempFilePath, Style.core, rules);
 
       final content = await File(tempFilePath).readAsString();
-      expect(content, contains('# Incompatible with [other_rule]'));
+      final lines = content.split('\n');
+
+      expect(lines, contains('    # Incompatible with [other_rule]'));
     });
 
     test('should handle rules not in the selected style set', () async {
@@ -135,8 +146,10 @@ void main() {
       await writeAnalysisFile(tempFilePath, Style.core, rules);
 
       final content = await File(tempFilePath).readAsString();
-      expect(content, contains('# test_rule: error'));
-      expect(content, contains('# - test_rule'));
+      final lines = content.split('\n');
+
+      expect(lines, contains('    # test_rule: error'));
+      expect(lines, contains('    # - test_rule'));
     });
 
     test('should handle multiple rules correctly', () async {
@@ -162,10 +175,32 @@ void main() {
       await writeAnalysisFile(tempFilePath, Style.core, rules);
 
       final content = await File(tempFilePath).readAsString();
-      expect(content, contains('rule1: error'));
-      expect(content, contains('rule2: error'));
-      expect(content, contains('- rule1'));
-      expect(content, contains('- rule2'));
+      final lines = content.split('\n');
+
+      expect(lines, contains('    rule1: error'));
+      expect(lines, contains('    rule2: error'));
+      expect(lines, contains('    - rule1'));
+      expect(lines, contains('    - rule2'));
+    });
+
+    test('should handle rules with multiple categories', () async {
+      final rules = [
+        AnalysisRules(
+          name: 'test_rule',
+          description: 'Test rule description',
+          sets: ['core'],
+          state: 'stable',
+          incompatible: [],
+          categories: ['style', 'error', 'performance'],
+        ),
+      ];
+
+      await writeAnalysisFile(tempFilePath, Style.core, rules);
+
+      final content = await File(tempFilePath).readAsString();
+      final lines = content.split('\n');
+
+      expect(lines, contains('    # Categories: [style, error, performance]'));
     });
   });
 }

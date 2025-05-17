@@ -8,17 +8,16 @@ import 'package:test/test.dart';
 void main() {
   group('parseArguments', () {
     late String tempFilePath;
+    late Directory tempDir;
 
     setUp(() {
-      // Create a temporary file for testing
-      final tempDir = Directory.systemTemp.createTempSync();
+      tempDir = Directory.systemTemp.createTempSync();
       tempFilePath = '${tempDir.path}/analysis_options.yaml';
       File(tempFilePath).createSync();
     });
 
     tearDown(() {
-      // Clean up the temporary file
-      File(tempFilePath).deleteSync();
+      tempDir.deleteSync(recursive: true);
     });
 
     test('should parse valid arguments correctly', () {
