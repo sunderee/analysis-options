@@ -2,7 +2,6 @@ import 'dart:io';
 
 import 'package:analysis_options/cli.dart';
 import 'package:analysis_options/data/style.dart';
-import 'package:args/args.dart';
 import 'package:test/test.dart';
 
 void main() {
@@ -39,25 +38,25 @@ void main() {
     test('should throw error for non-existent file', () {
       final args = ['--path', '/non/existent/path.yaml', '--style', 'core'];
 
-      expect(() => parseArguments(args), throwsA(isA<ProcessException>()));
+      expect(() => parseArguments(args), throwsA(isA<CliException>()));
     });
 
     test('should throw error for invalid style', () {
       final args = ['--path', tempFilePath, '--style', 'invalid_style'];
 
-      expect(() => parseArguments(args), throwsA(isA<ArgParserException>()));
+      expect(() => parseArguments(args), throwsA(isA<CliException>()));
     });
 
     test('should throw error when required arguments are missing', () {
       final args = ['--path', tempFilePath];
 
-      expect(() => parseArguments(args), throwsA(isA<ArgParserException>()));
+      expect(() => parseArguments(args), throwsA(isA<CliException>()));
     });
 
     test('should handle help flag', () {
       final args = ['--help'];
 
-      expect(() => parseArguments(args), throwsA(isA<ProcessException>()));
+      expect(() => parseArguments(args), throwsA(isA<CliException>()));
     });
 
     test('should handle all valid styles', () {

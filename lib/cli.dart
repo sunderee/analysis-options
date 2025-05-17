@@ -6,6 +6,15 @@ import 'package:args/args.dart';
 
 typedef ParsedArguments = ({String filePath, Style style});
 
+class CliException implements Exception {
+  final String message;
+
+  CliException(this.message);
+
+  @override
+  String toString() => 'CliException: $message';
+}
+
 ParsedArguments parseArguments(List<String> arguments) {
   final parser = ArgParser();
   parser.addOption(
@@ -26,8 +35,7 @@ ParsedArguments parseArguments(List<String> arguments) {
   try {
     final result = parser.parse(arguments);
     if (result.wasParsed('help')) {
-      print(parser.usage);
-      exit(0);
+      throw CliException(parser.usage);
     }
 
     String filePath = '';
@@ -38,26 +46,26 @@ ParsedArguments parseArguments(List<String> arguments) {
         filePath = path;
       } else {
         Logger.error('File does not exist');
-        exit(1);
+        throw CliException('File does not exist');
       }
     } else {
-      print(parser.usage);
-      exit(1);
+      throw CliException(parser.usage);
     }
 
     if (result.wasParsed('style')) {
       final style = result['style'] as String;
       if (Style.values.map((item) => item.name).contains(style)) {
         styleToUse = Style.values.firstWhere((item) => item.name == style);
+      } else {
+        throw CliException('Invalid style: $style');
       }
     } else {
-      print(parser.usage);
-      exit(1);
+      throw CliException(parser.usage);
     }
 
     return (filePath: filePath, style: styleToUse);
-  } catch (error) {
+  } on ArgParserException catch (error) {
     Logger.error(error.toString());
-    exit(1);
+    throw CliException(error.toString());
   }
 }
