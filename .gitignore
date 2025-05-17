@@ -6,3 +6,6 @@
 # Dart/pub related
 .dart_tool/
 pubspec.lock
+
+# Outputs
+analysis-options
