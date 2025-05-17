@@ -32,3 +32,7 @@ Run the tests with:
 ```
 $ dart test
 ```
+
+## License
+
+Project is licensed under GPL-3.0 license.
