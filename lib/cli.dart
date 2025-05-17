@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:analysis_options/data/style.dart';
+import 'package:analysis_options/logger.dart';
 import 'package:args/args.dart';
 
 typedef ParsedArguments = ({String filePath, Style style});
@@ -35,7 +36,7 @@ ParsedArguments parseArguments(List<String> arguments) {
       if (File(path).existsSync()) {
         filePath = path;
       } else {
-        print('File does not exist');
+        Logger.error('File does not exist');
         exit(1);
       }
     } else {
@@ -55,7 +56,7 @@ ParsedArguments parseArguments(List<String> arguments) {
 
     return (filePath: filePath, style: styleToUse);
   } catch (error) {
-    print(error);
+    Logger.error(error.toString());
     exit(1);
   }
 }
