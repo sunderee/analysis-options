@@ -19,6 +19,7 @@ ParsedArguments parseArguments(List<String> arguments) {
     abbr: 's',
     mandatory: true,
     allowed: Style.values.map((item) => item.name),
+    help: 'Which style set to use',
   );
   parser.addFlag('help', abbr: 'h', help: 'Show the usage syntax.');
 

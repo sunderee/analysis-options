@@ -4,13 +4,12 @@ Dart-based CLI tool for automatically populating analysis_options.yaml file with
 
 ## Usage
 
-To compile into an executable, run `compile.sh`;
-
-For usage of the executable, use `-h/--help`:
+To compile into an executable, run `compile.sh`. For usage of the executable, use `-h/--help`:
 
 ```
-% ./analysis-options --help                                                     
--p, --path=<Absolute path to the analysis_options.yaml file> (mandatory)    
--s, --style=<Which style set to use> (mandatory)                            [core, recommended, flutter]
--h, --[no-]help                                                             Show the usage syntax.
+$ ./analysis-options --help
+-p, --path (mandatory)     Absolute path to the analysis_options.yaml file
+-s, --style (mandatory)    Which style set to use
+                           [core, recommended, flutter]
+-h, --[no-]help            Show the usage syntax.
 ```
