@@ -9,6 +9,11 @@ Future<void> main(List<String> arguments) async {
   try {
     final parsedArguments = parseArguments(arguments);
 
+    // If help was requested, just exit normally
+    if (arguments.contains('-h') || arguments.contains('--help')) {
+      exit(0);
+    }
+
     Logger.debug('Fetching analysis rules...');
     final analysisRules = await fetchAnalysisRules();
 

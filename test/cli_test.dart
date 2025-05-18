@@ -55,8 +55,10 @@ void main() {
 
     test('should handle help flag', () {
       final args = ['--help'];
+      final result = parseArguments(args);
 
-      expect(() => parseArguments(args), throwsA(isA<CliException>()));
+      expect(result.filePath, equals(''));
+      expect(result.style, equals(Style.core));
     });
 
     test('should handle all valid styles', () {

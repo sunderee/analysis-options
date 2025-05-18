@@ -35,7 +35,9 @@ ParsedArguments parseArguments(List<String> arguments) {
   try {
     final result = parser.parse(arguments);
     if (result.wasParsed('help')) {
-      throw CliException(parser.usage);
+      print(parser.usage);
+      // Return an empty result with a special marker for help
+      return (filePath: '', style: Style.core);
     }
 
     String filePath = '';
